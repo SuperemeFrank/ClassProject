@@ -4,6 +4,7 @@
 <head>
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+    <title>POLS</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 </head>
 
@@ -11,18 +12,31 @@
     <div id="app">
         <v-app dark>
             <v-content>
-                <v-container>
-                    <template>
-                        <form>
-                            <v-text-field v-model="name" :error-messages="nameErrors" :counter="120" label="Name" required @input="$v.name.$touch()" @blur="$v.name.$touch()"></v-text-field>
-                            <v-text-field v-model="email" :error-messages="emailErrors" label="E-mail" required @input="$v.email.$touch()" @blur="$v.email.$touch()"></v-text-field>
-                            <v-text-field v-model="pw" :error-messages="pwErrors" :type="show1 ? 'text' : 'password'" label="Password" :append-icon="show1 ? 'visibility_off' : 'visibility'" required @input="$v.pw.$touch()" @blur="$v.pw.$touch()" @click:append="show1 = !show1"></v-text-field>
-                            <v-text-field v-model="pwVerify" :error-messages="pwVerifyErrors" :type="show2 ? 'text' : 'password'" label="Confirm Password" :append-icon="show2 ? 'visibility_off' : 'visibility'" required @input="$v.pwVerify.$touch()" @blur="$v.pwVerify.$touch()" @click:append="show2 = !show2"></v-text-field>
-                            <v-checkbox v-model="checkbox" :error-messages="checkboxErrors" label="Do you agree to our terms and condition?" required @change="$v.checkbox.$touch()" @blur="$v.checkbox.$touch()"></v-checkbox>
-                            <v-btn @click="Register">Register</v-btn>
-                            <v-btn @click="clear">clear</v-btn>
-                        </form>
-                    </template>
+                <v-container grid-list-md text-xs-center>
+                    <v-layout row wrap>
+                        <v-flex xs6>
+                            <form>
+                            	 <v-spacer></v-spacer>
+                                <v-text-field v-model="emailLogin" :error-messages="emailLoginErrors" label="E-mail" required @input="$v.emailLogin.$touch()" @blur="$v.emailLogin.$touch()"></v-text-field>
+                                <v-text-field v-model="pwLogin" :error-messages="pwLoginErrors" :type="show1 ? 'text' : 'password'" label="Password" :append-icon="show3 ? 'visibility_off' : 'visibility'" required @input="$v.pwLogin.$touch()" @blur="$v.pwLogin.$touch()" @click:append="show3 = !show3"></v-text-field>
+                                <v-btn @click="Login">Login</v-btn>
+                                <v-btn @click="clearLogin">clear</v-btn>
+
+                            </form>
+                        </v-flex>
+                         <v-spacer xs2></v-spacer>
+                        <v-flex xs6>
+                            <form>
+                                <v-text-field v-model="name" :error-messages="nameErrors" :counter="120" label="Name" required @input="$v.name.$touch()" @blur="$v.name.$touch()"></v-text-field>
+                                <v-text-field v-model="email" :error-messages="emailErrors" label="E-mail" required @input="$v.email.$touch()" @blur="$v.email.$touch()"></v-text-field>
+                                <v-text-field v-model="pw" :error-messages="pwErrors" :type="show1 ? 'text' : 'password'" label="Password" :append-icon="show1 ? 'visibility_off' : 'visibility'" required @input="$v.pw.$touch()" @blur="$v.pw.$touch()" @click:append="show1 = !show1"></v-text-field>
+                                <v-text-field v-model="pwVerify" :error-messages="pwVerifyErrors" :type="show2 ? 'text' : 'password'" label="Confirm Password" :append-icon="show2 ? 'visibility_off' : 'visibility'" required @input="$v.pwVerify.$touch()" @blur="$v.pwVerify.$touch()" @click:append="show2 = !show2"></v-text-field>
+                                <v-checkbox v-model="checkbox" :error-messages="checkboxErrors" label="Do you agree to our terms and condition?" required @change="$v.checkbox.$touch()" @blur="$v.checkbox.$touch()"></v-checkbox>
+                                <v-btn @click="Register">Register</v-btn>
+                                <v-btn @click="clear">clear</v-btn>
+                            </form>
+                        </v-flex>
+                    </v-layout>
                 </v-container>
             </v-content>
         </v-app>
@@ -33,7 +47,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vuelidate/dist/validators.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/babel-polyfill/dist/polyfill.min.js"></script>
     <script>
-    const { required, maxLength, email, minLength,sameAs } = validators
+    const { required, maxLength, email, minLength, sameAs } = validators
     const validationMixin = vuelidate.validationMixin
     Vue.use(vuelidate.default)
 
@@ -43,16 +57,21 @@
         validations: {
             name: { required, maxLength: maxLength(120) },
             email: { required, email },
-            pw: 		{ required, minLength: minLength(6) },
-            pwVerify: 	{ required, sameAsPassword: sameAs('pw') },
-            checkbox: 	{ required }
+            emailLogin: { required, email },
+            pw: { required, minLength: minLength(6) },
+            pwLogin: { required, minLength: minLength(6) },
+            pwVerify: { required, sameAsPassword: sameAs('pw') },
+            checkbox: { required }
         },
         data: () => ({
+        	emailLogin: '',
+        	pwLogin:'',
             name: '',
             email: '',
             pw: '',
             pwVerify: '',
             checkbox: false,
+            show3: false,
             show2: false,
             show1: false
         }),
@@ -73,8 +92,20 @@
                     return errors
                 }
                 if (!this.$v.pw.minLength) {
-                	errors.push('Password not long enough')
-                	return errors
+                    errors.push('Password not long enough')
+                    return errors
+                }
+            },
+            pwLoginErrors() {
+                const errors = []
+                if (!this.$v.pwLogin.$dirty) return errors
+                if (!this.$v.pwLogin.required) {
+                    errors.push('Item is required')
+                    return errors
+                }
+                if (!this.$v.pwLogin.minLength) {
+                    errors.push('Password not long enough')
+                    return errors
                 }
             },
             pwVerifyErrors() {
@@ -115,6 +146,20 @@
                     errors.push('Must be valid e-mail')
                     return errors
                 }
+            },
+            emailLoginErrors() {
+                const errors = []
+                if (!this.$v.emailLogin.$dirty) {
+                    return errors
+                }
+                if (!this.$v.emailLogin.required) {
+                    errors.push('E-mail is required');
+                    return errors
+                }
+                if (!this.$v.emailLogin.email) {
+                    errors.push('Must be valid e-mail')
+                    return errors
+                }
             }
         },
         methods: {
@@ -128,7 +173,15 @@
                 this.pw = ''
                 this.pwVerify = ''
                 this.checkbox = false
-            }
+            },
+            Login() {
+            	this.$v.$touch()
+            },
+            clearLogin() {
+                this.$v.$reset()
+                this.emailLogin = ''
+                this.pwLogin = ''
+            },
         }
     })
     </script>
