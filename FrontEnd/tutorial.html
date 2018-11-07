@@ -4,7 +4,7 @@
 <head>
 	<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
 	<link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
-	<title>POLS-Classes</title>
+	<title>POLS-Tutorial</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 </head>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -81,6 +81,9 @@
 				<v-btn icon>
 					<v-icon>settings</v-icon>
 				</v-btn>
+				<v-btn icon>
+					<v-icon>exit_to_app</v-icon>
+				</v-btn>
 			</v-toolbar>
 			<v-content>
 				<v-container fluid fill-height class="grey lighten-4">
@@ -102,15 +105,8 @@
 				{ icon: 'home', text: 'Home' },
 				{
 					icon: 'class',
-					'icon-alt': 'class',
 					text: 'Classes',
-					model: false,
-					children: [
-						{ icon: 'all_inclusive', text: 'Syllabus' },
-						{ icon: 'list_alt', text: 'Modules' },
-						{ icon: 'assignment', text: 'Assignments' },
-						{ icon: 'assessment', text: 'Grades' }
-					]
+
 				},
 				{
 					icon: 'face',
@@ -119,8 +115,8 @@
 					model: true,
 					children: [
 						{ icon: 'pregnant_woman', text: 'Prebirth' },
-						{ icon: 'exposure_zero', text: '0-12 Months' },
-						{ icon: 'exposure_plus_1', text: '12-24 Months' },
+						{ icon: 'child_friendly', text: '0-12 Months' },
+						{ icon: 'child_care', text: '12-24 Months' },
 						{ icon: 'exposure_plus_2', text: '24-36 Months' }
 					]
 				},
