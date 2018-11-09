@@ -11,13 +11,7 @@
        xmlns:context="http://www.springframework.org/schema/context">
 
     <context:component-scan base-package="controller"></context:component-scan>
-    <bean name="/product_input.action"
-          class="controller.InputProductController">
-    </bean>
 
-    <bean name="/product_save.action"
-          class="controller.SaveProductController">
-    </bean>
 
     <mvc:annotation-driven/>
     <!--<mvc:resources mapping="/css/**" location="/"/>-->
